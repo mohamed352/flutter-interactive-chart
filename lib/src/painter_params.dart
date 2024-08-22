@@ -10,7 +10,8 @@ class PainterParams {
   final Size size;
   final double candleWidth;
   final double startOffset;
-
+  final List<double> horizontalLines;
+  final List<int> verticalLines;
   final double maxPrice;
   final double minPrice;
   final double maxVol;
@@ -31,6 +32,8 @@ class PainterParams {
     required this.minPrice,
     required this.maxVol,
     required this.minVol,
+    this.horizontalLines = const [],
+    this.verticalLines = const [],
     required this.xShift,
     required this.tapPosition,
     required this.leadingTrends,

@@ -10,6 +10,12 @@ import 'chart_style.dart';
 import 'painter_params.dart';
 
 class InteractiveChart extends StatefulWidget {
+  /// A list of prices where horizontal lines should be drawn.
+  final List<double> horizontalLines;
+
+  /// A list of timestamps where vertical lines should be drawn.
+  final List<int> verticalLines;
+
   /// The full list of [CandleData] to be used for this chart.
   ///
   /// It needs to have at least 3 data points. If data is sufficiently large,
@@ -69,6 +75,8 @@ class InteractiveChart extends StatefulWidget {
     this.priceLabel,
     this.overlayInfo,
     this.onTap,
+    this.horizontalLines = const [],
+    this.verticalLines = const [],
     this.onCandleResize,
   })  : this.style = style ?? const ChartStyle(),
         assert(candles.length >= 3,
@@ -171,6 +179,8 @@ class _InteractiveChartState extends State<InteractiveChart> {
               minPrice: minPrice,
               maxVol: maxVol,
               minVol: minVol,
+              horizontalLines: widget.horizontalLines,
+              verticalLines: widget.verticalLines,
               xShift: xShift,
               tapPosition: _tapPosition,
               leadingTrends: leadingTrends,
