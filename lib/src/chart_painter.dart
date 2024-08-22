@@ -49,29 +49,7 @@ class ChartPainter extends CustomPainter {
       }
     }
     // Draw horizontal lines
-    for (final price in params.horizontalLines) {
-      final y = (params.maxPrice - price) /
-          (params.maxPrice - params.minPrice) *
-          size.height;
-      canvas.drawLine(
-        Offset(0, y),
-        Offset(size.width, y),
-        Paint()..color = Colors.red, // Customize the line color
-      );
-    }
-
-    // Draw vertical lines
-    for (final timestamp in params.verticalLines) {
-      final index = params.candles.indexWhere((c) => c.timestamp == timestamp);
-      if (index != -1) {
-        final x = index * params.candleWidth + params.xShift;
-        canvas.drawLine(
-          Offset(x, 0),
-          Offset(x, size.height),
-          Paint()..color = Colors.blue, // Customize the line color
-        );
-      }
-    }
+    _drawHorizontalLines(canvas, params, size);
   }
 
   void _drawTimeLabels(canvas, PainterParams params) {
@@ -308,6 +286,21 @@ class ChartPainter extends CustomPainter {
     }
 
     canvas.restore();
+  }
+
+  void _drawHorizontalLines(canvas, PainterParams params, Size size) {
+    for (final price in params.horizontalLines) {
+      final y = (params.maxPrice - price) /
+          (params.maxPrice - params.minPrice) *
+          size.height;
+      canvas.drawLine(
+        Offset(0, y),
+        Offset(size.width, y),
+        Paint()
+          ..color = params.horizontalLinesColor ??
+              Colors.red, // Customize the line color
+      );
+    }
   }
 
   @override
