@@ -288,18 +288,37 @@ class ChartPainter extends CustomPainter {
     canvas.restore();
   }
 
-  void _drawHorizontalLines(canvas, PainterParams params, Size size) {
-    for (final price in params.horizontalLines) {
+  void _drawHorizontalLines(Canvas canvas, PainterParams params, Size size) {
+    for (int i = 0; i < params.horizontalLines.length; i++) {
+      final price = params.horizontalLines[i];
+
       final y = (params.maxPrice - price) /
           (params.maxPrice - params.minPrice) *
           size.height;
+
+      // Draw the horizontal line
       canvas.drawLine(
         Offset(0, y),
         Offset(size.width, y),
         Paint()
+          ..strokeWidth = params.horizontalLinesWidth ?? 1.5
           ..color = params.horizontalLinesColor ??
               Colors.red, // Customize the line color
       );
+
+      // Draw the label on top of the line
+      final textPainter = TextPainter(
+        text: params.horizontalLinesLabel,
+        textDirection: TextDirection.ltr,
+      )..layout(maxWidth: size.width);
+
+      // Center the label horizontally
+      final textOffset = Offset(
+        (size.width - textPainter.width) / 2, // Centered horizontally
+        y - textPainter.height - 2, // Positioned above the line
+      );
+
+      textPainter.paint(canvas, textOffset);
     }
   }
 

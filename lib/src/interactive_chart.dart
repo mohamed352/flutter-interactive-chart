@@ -13,8 +13,8 @@ class InteractiveChart extends StatefulWidget {
   /// A list of prices where horizontal lines should be drawn.
   final List<double> horizontalLines;
   final Color? horizontalLinesColor;
-
- 
+  final double? horizontalLinesWidth;
+  final TextSpan  horizontalLinesLabel;
 
   /// The full list of [CandleData] to be used for this chart.
   ///
@@ -73,9 +73,11 @@ class InteractiveChart extends StatefulWidget {
     ChartStyle? style,
     this.timeLabel,
     this.priceLabel,
+    required this.horizontalLinesLabel,
+    this.horizontalLinesWidth,
     this.overlayInfo,
     this.onTap,
-    this.horizontalLinesColor ,
+    this.horizontalLinesColor,
     this.horizontalLines = const [],
     this.onCandleResize,
   })  : this.style = style ?? const ChartStyle(),
@@ -173,6 +175,8 @@ class _InteractiveChartState extends State<InteractiveChart> {
               candles: candlesInRange,
               style: widget.style,
               size: size,
+              horizontalLinesLabel: widget.horizontalLinesLabel,
+              horizontalLinesWidth: widget.horizontalLinesWidth,
               candleWidth: _candleWidth,
               startOffset: _startOffset,
               maxPrice: maxPrice,
@@ -181,7 +185,6 @@ class _InteractiveChartState extends State<InteractiveChart> {
               maxVol: maxVol,
               minVol: minVol,
               horizontalLines: widget.horizontalLines,
-
               xShift: xShift,
               tapPosition: _tapPosition,
               leadingTrends: leadingTrends,

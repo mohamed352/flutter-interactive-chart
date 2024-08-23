@@ -9,12 +9,15 @@ class PainterParams {
   final ChartStyle style;
   final Size size;
   final double candleWidth;
+
   final double startOffset;
   final List<double> horizontalLines;
   final double maxPrice;
   final double minPrice;
   final double maxVol;
   final double minVol;
+  final double? horizontalLinesWidth;
+  final TextSpan  horizontalLinesLabel;
 
   final double xShift;
   final Offset? tapPosition;
@@ -28,6 +31,8 @@ class PainterParams {
     required this.size,
     this.horizontalLinesColor,
     required this.candleWidth,
+    this.horizontalLinesWidth,
+    required this.horizontalLinesLabel,
     required this.startOffset,
     required this.maxPrice,
     required this.minPrice,
@@ -89,6 +94,7 @@ class PainterParams {
     return PainterParams(
       candles: b.candles,
       style: b.style,
+      horizontalLinesLabel: b.horizontalLinesLabel,
       size: b.size,
       candleWidth: b.candleWidth,
       startOffset: b.startOffset,
@@ -136,3 +142,4 @@ class PainterParamsTween extends Tween<PainterParams> {
   @override
   PainterParams lerp(double t) => PainterParams.lerp(begin ?? end!, end!, t);
 }
+
