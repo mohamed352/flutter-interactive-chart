@@ -682,7 +682,7 @@ class _InteractiveChartScreenState extends State<InteractiveChartScreen> {
           horizontalLinesColor: Colors.red,
           horizontalLinesWidth: 1.5,
           horizontalLinesLabel: const TextSpan(
-            text: "800",
+            text: "812",
             style: TextStyle(
               color: Colors.teal, // Customize the label color
               fontSize: 14, // Customize the label font size
@@ -690,7 +690,7 @@ class _InteractiveChartScreenState extends State<InteractiveChartScreen> {
             ),
           ),
           horizontalLines: const [
-            800.0,
+            812.0,
           ], // Draw horizontal lines at these prices
 
           style: ChartStyle(
@@ -716,7 +716,7 @@ class _InteractiveChartScreenState extends State<InteractiveChartScreen> {
             "Close": "${candle.close?.toStringAsFixed(2)}",
           },
           initialVisibleCandleCount: 15,
-          onTap: (candle) => print(yCoordinate),
+          onTap: (candle) => debugPrint(yCoordinate.toString()),
           onCandleResize: (width) {
             setState(() {
               yCoordinate =

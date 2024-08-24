@@ -289,14 +289,23 @@ class ChartPainter extends CustomPainter {
   }
 
   void _drawHorizontalLines(Canvas canvas, PainterParams params, Size size) {
+    final double paddingTop =
+        0; // Optional padding to avoid drawing at the very top
+    final double paddingBottom =
+        0; // Optional padding to avoid drawing at the very bottom
+
     for (int i = 0; i < params.horizontalLines.length; i++) {
       final price = params.horizontalLines[i];
 
       final y = (params.maxPrice - price) /
-          (params.maxPrice - params.minPrice) *
-          size.height;
+              (params.maxPrice - params.minPrice) *
+              (size.height - paddingTop - paddingBottom) +
+          paddingTop;
 
-      // Draw the horizontal line
+      // Constrain y to the graph's height
+      if (y < paddingTop || y > size.height - paddingBottom) continue;
+
+      // Draw the horizontal line within the graph area
       canvas.drawLine(
         Offset(0, y),
         Offset(size.width, y),
@@ -306,13 +315,13 @@ class ChartPainter extends CustomPainter {
               Colors.red, // Customize the line color
       );
 
-      // Draw the label on top of the line
+      /// Draw the label centered on top of the line, constrained within the graph area
       final textPainter = TextPainter(
         text: params.horizontalLinesLabel,
         textDirection: TextDirection.ltr,
       )..layout(maxWidth: size.width);
 
-      // Center the label horizontally
+      // Center the label horizontally within the graph area
       final textOffset = Offset(
         (size.width - textPainter.width) / 2, // Centered horizontally
         y - textPainter.height - 2, // Positioned above the line

@@ -1,8 +1,5 @@
 import 'package:example/test.dart';
 import 'package:flutter/material.dart';
-import 'package:interactive_chart/interactive_chart.dart';
-
-import 'mock_data.dart';
 
 void main() {
   runApp(const MyApp());
