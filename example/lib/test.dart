@@ -681,6 +681,7 @@ class _InteractiveChartScreenState extends State<InteractiveChartScreen> {
           candles: _data,
           horizontalLinesColor: Colors.red,
           horizontalLinesWidth: 1.5,
+        
           horizontalLinesLabel: const TextSpan(
             text: "812",
             style: TextStyle(

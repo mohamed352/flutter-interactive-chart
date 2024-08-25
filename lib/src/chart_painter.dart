@@ -288,48 +288,59 @@ class ChartPainter extends CustomPainter {
     canvas.restore();
   }
 
-  void _drawHorizontalLines(Canvas canvas, PainterParams params, Size size) {
-    final double paddingTop =
-        0; // Optional padding to avoid drawing at the very top
-    final double paddingBottom =
-        0; // Optional padding to avoid drawing at the very bottom
+ void _drawHorizontalLines(Canvas canvas, PainterParams params, Size size) {
+  final double paddingTop = 0; // Optional padding to avoid drawing at the very top
+  final double paddingBottom = 0; // Optional padding to avoid drawing at the very bottom
 
-    for (int i = 0; i < params.horizontalLines.length; i++) {
-      final price = params.horizontalLines[i];
+  for (int i = 0; i < params.horizontalLines.length; i++) {
+    final price = params.horizontalLines[i];
 
-      final y = (params.maxPrice - price) /
-              (params.maxPrice - params.minPrice) *
-              (size.height - paddingTop - paddingBottom) +
-          paddingTop;
+    final y = (params.maxPrice - price) /
+            (params.maxPrice - params.minPrice) *
+            (size.height - paddingTop - paddingBottom) +
+        paddingTop;
 
-      // Constrain y to the graph's height
-      if (y < paddingTop || y > size.height - paddingBottom) continue;
+    // Constrain y to the graph's height
+    if (y < paddingTop || y > size.height - paddingBottom) continue;
 
-      // Draw the horizontal line within the graph area
-      canvas.drawLine(
-        Offset(0, y),
-        Offset(size.width, y),
-        Paint()
-          ..strokeWidth = params.horizontalLinesWidth ?? 1.5
-          ..color = params.horizontalLinesColor ??
-              Colors.red, // Customize the line color
-      );
+    // Draw the horizontal line within the graph area
+    canvas.drawLine(
+      Offset(0, y),
+      Offset(size.width, y),
+      Paint()
+        ..strokeWidth = params.horizontalLinesWidth ?? 1.5
+        ..color = params.horizontalLinesColor ?? Colors.red, // Customize the line color
+    );
 
-      /// Draw the label centered on top of the line, constrained within the graph area
-      final textPainter = TextPainter(
-        text: params.horizontalLinesLabel,
-        textDirection: TextDirection.ltr,
-      )..layout(maxWidth: size.width);
+    // Draw the label based on the provided textAlign parameter
+    final textPainter = TextPainter(
+      text: params.horizontalLinesLabel,
+      textDirection: TextDirection.ltr,
+    )..layout(maxWidth: size.width);
 
-      // Center the label horizontally within the graph area
-      final textOffset = Offset(
-        (size.width - textPainter.width) / 2, // Centered horizontally
-        y - textPainter.height - 2, // Positioned above the line
-      );
-
-      textPainter.paint(canvas, textOffset);
+    double labelX;
+    switch (params.horizontalLinesTextAlign) {
+      case TextAlign.left:
+        labelX = 0; // Left-aligned
+        break;
+      case TextAlign.right:
+        labelX = size.width - textPainter.width; // Right-aligned
+        break;
+      case TextAlign.center:
+      default:
+        labelX = (size.width - textPainter.width) / 2; // Centered horizontally
+        break;
     }
+
+    final textOffset = Offset(
+      labelX, // Position determined by textAlign
+      y - textPainter.height - 2, // Positioned above the line
+    );
+
+    textPainter.paint(canvas, textOffset);
   }
+}
+
 
   @override
   bool shouldRepaint(ChartPainter oldDelegate) =>

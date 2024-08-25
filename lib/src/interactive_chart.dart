@@ -15,6 +15,7 @@ class InteractiveChart extends StatefulWidget {
   final Color? horizontalLinesColor;
   final double? horizontalLinesWidth;
   final TextSpan  horizontalLinesLabel;
+  final TextAlign horizontalLinesTextAlign;
 
   /// The full list of [CandleData] to be used for this chart.
   ///
@@ -72,6 +73,8 @@ class InteractiveChart extends StatefulWidget {
     this.initialVisibleCandleCount = 90,
     ChartStyle? style,
     this.timeLabel,
+    this.horizontalLinesTextAlign = TextAlign.center,
+
     this.priceLabel,
     required this.horizontalLinesLabel,
     this.horizontalLinesWidth,
@@ -174,6 +177,7 @@ class _InteractiveChartState extends State<InteractiveChart> {
             end: PainterParams(
               candles: candlesInRange,
               style: widget.style,
+              horizontalLinesTextAlign: widget.horizontalLinesTextAlign,
               size: size,
               horizontalLinesLabel: widget.horizontalLinesLabel,
               horizontalLinesWidth: widget.horizontalLinesWidth,

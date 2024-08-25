@@ -9,6 +9,7 @@ class PainterParams {
   final ChartStyle style;
   final Size size;
   final double candleWidth;
+  final TextAlign horizontalLinesTextAlign;
 
   final double startOffset;
   final List<double> horizontalLines;
@@ -35,6 +36,7 @@ class PainterParams {
     required this.horizontalLinesLabel,
     required this.startOffset,
     required this.maxPrice,
+    required this.horizontalLinesTextAlign,
     required this.minPrice,
     required this.maxVol,
     required this.minVol,
@@ -93,6 +95,7 @@ class PainterParams {
         lerpDouble(getField(a), getField(b), t)!;
     return PainterParams(
       candles: b.candles,
+      horizontalLinesTextAlign: b.horizontalLinesTextAlign,
       style: b.style,
       horizontalLinesLabel: b.horizontalLinesLabel,
       size: b.size,
