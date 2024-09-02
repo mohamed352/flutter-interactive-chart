@@ -288,59 +288,68 @@ class ChartPainter extends CustomPainter {
     canvas.restore();
   }
 
- void _drawHorizontalLines(Canvas canvas, PainterParams params, Size size) {
-  final double paddingTop = 0; // Optional padding to avoid drawing at the very top
-  final double paddingBottom = 0; // Optional padding to avoid drawing at the very bottom
+  void _drawHorizontalLines(Canvas canvas, PainterParams params, Size size) {
+    final double chartTop = 0;
+    final double chartBottom = params.chartHeight;
 
-  for (int i = 0; i < params.horizontalLines.length; i++) {
-    final price = params.horizontalLines[i];
+    for (int i = 0; i < params.horizontalLines.length; i++) {
+      final price = params.horizontalLines[i];
 
-    final y = (params.maxPrice - price) /
-            (params.maxPrice - params.minPrice) *
-            (size.height - paddingTop - paddingBottom) +
-        paddingTop;
+      // Calculate y position within the chart area
+      final y = params.fitPrice(price);
 
-    // Constrain y to the graph's height
-    if (y < paddingTop || y > size.height - paddingBottom) continue;
+      // Only draw the line if it's within the chart area
+      if (y >= chartTop && y <= chartBottom) {
+        // Draw the horizontal line
+        canvas.drawLine(
+          Offset(0, y),
+          Offset(params.chartWidth, y),
+          Paint()
+            ..strokeWidth = params.horizontalLinesWidth ?? 1.5
+            ..color = params.horizontalLinesColor ?? Colors.red,
+        );
 
-    // Draw the horizontal line within the graph area
-    canvas.drawLine(
-      Offset(0, y),
-      Offset(size.width, y),
-      Paint()
-        ..strokeWidth = params.horizontalLinesWidth ?? 1.5
-        ..color = params.horizontalLinesColor ?? Colors.red, // Customize the line color
-    );
+        // Draw the label
+        final textPainter = TextPainter(
+          text: params.horizontalLinesLabel,
+          textDirection: TextDirection.ltr,
+        )..layout(maxWidth: params.chartWidth);
 
-    // Draw the label based on the provided textAlign parameter
-    final textPainter = TextPainter(
-      text: params.horizontalLinesLabel,
-      textDirection: TextDirection.ltr,
-    )..layout(maxWidth: size.width);
+        double labelX;
+        switch (params.horizontalLinesTextAlign) {
+          case TextAlign.left:
+            labelX = 4; // Add a small padding from the left edge
+            break;
+          case TextAlign.right:
+            labelX = params.chartWidth -
+                textPainter.width -
+                4; // Add a small padding from the right edge
+            break;
+          case TextAlign.center:
+          default:
+            labelX = (params.chartWidth - textPainter.width) / 2;
+            break;
+        }
 
-    double labelX;
-    switch (params.horizontalLinesTextAlign) {
-      case TextAlign.left:
-        labelX = 0; // Left-aligned
-        break;
-      case TextAlign.right:
-        labelX = size.width - textPainter.width; // Right-aligned
-        break;
-      case TextAlign.center:
-      default:
-        labelX = (size.width - textPainter.width) / 2; // Centered horizontally
-        break;
+        // final textOffset = Offset(
+        //   labelX,
+        //   y - textPainter.height / 2, // Center the text vertically on the line
+        // );
+        final textOffset = Offset(
+          labelX, // Position determined by textAlign
+          y - textPainter.height - 2, // Positioned above the line
+        );
+
+        // Draw a background rectangle for better readability
+        final backgroundRect = Rect.fromLTWH(textOffset.dx - 2, textOffset.dy,
+            textPainter.width + 4, textPainter.height);
+        canvas.drawRect(
+            backgroundRect, Paint()..color = Colors.white.withOpacity(0.7));
+
+        textPainter.paint(canvas, textOffset);
+      }
     }
-
-    final textOffset = Offset(
-      labelX, // Position determined by textAlign
-      y - textPainter.height - 2, // Positioned above the line
-    );
-
-    textPainter.paint(canvas, textOffset);
   }
-}
-
 
   @override
   bool shouldRepaint(ChartPainter oldDelegate) =>

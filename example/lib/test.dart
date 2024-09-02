@@ -644,8 +644,8 @@ class _InteractiveChartScreenState extends State<InteractiveChartScreen> {
   double yCoordinate = 0;
   @override
   void initState() {
-    minPrice = 100;
-    maxPrice = 1000;
+    minPrice = 0;
+    maxPrice = 100;
 
     _data = _rawData.map((row) {
       double close = row[4];
@@ -681,9 +681,9 @@ class _InteractiveChartScreenState extends State<InteractiveChartScreen> {
           candles: _data,
           horizontalLinesColor: Colors.red,
           horizontalLinesWidth: 1.5,
-        
+
           horizontalLinesLabel: const TextSpan(
-            text: "812",
+            text: "50",
             style: TextStyle(
               color: Colors.teal, // Customize the label color
               fontSize: 14, // Customize the label font size
@@ -691,7 +691,7 @@ class _InteractiveChartScreenState extends State<InteractiveChartScreen> {
             ),
           ),
           horizontalLines: const [
-            812.0,
+            50.0,
           ], // Draw horizontal lines at these prices
 
           style: ChartStyle(
